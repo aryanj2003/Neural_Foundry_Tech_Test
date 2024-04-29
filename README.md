@@ -8,8 +8,8 @@ This project is a technical assessment for the Neural Foundry Software Engineeri
 
 ### System Requirements
 
-- **Programming Language**: Python 3.8 or newer
-- **Libraries**:
+- Programming Language: Python 3.9 or newer
+- Libraries:
   - `speech_recognition` for converting speech to text.
   - `json` for formatting output into JSON.
 
@@ -39,8 +39,8 @@ python Neural_Foundry_Tech_Test.py
 
 The application operates in the following manner:
 
-1. **Speech to Text**: Utilizes the `speech_recognition` library to convert spoken language into text. The application listens for a single phrase or command and processes it into text.
-2. **Generate Action Statements**: Converts the recognized text into a JSON formatted action statement. For example, the command "move forward" is converted to `{"direction": "linear", "quantity": 1}`.
+1. Speech to Text: Utilizes the `speech_recognition` library to convert spoken language into text. The application listens for a single phrase or command and processes it into text.
+2. Generate Action Statements: Converts the recognized text into a JSON formatted action statement. For example, the command "move forward" is converted to `{"direction": "linear", "quantity": 1}`.
 
 ### Code Structure
 
@@ -50,6 +50,18 @@ The application operates in the following manner:
 ### Contributing
 
 If you find any bugs or wish to suggest improvements, please submit an issue or pull request on GitHub. For major changes, please open an issue first to discuss what you would like to change.
+
+### References and Acknowledgements
+
+This project incorporates methodologies and code snippets adapted from the following sources:
+
+- Speech to Text Conversion:
+  - The speech recognition functionality in this project was informed by tutorials and examples from GeeksforGeeks. For more detailed       
+guidance on implementing speech recognition features in Python, please visit their article: Python: Convert Speech to Text and Text to Speech.
+- Whisper Model for Speech Recognition:
+  - The Whisper model developed by OpenAI was utilized for advanced speech-to-text capabilities. The implementation was guided by the official GitHub repository for Whisper. Detailed documentation and source code can be found here: OpenAI Whisper GitHub Repository.
+    
+These resources were instrumental in the development of this application, providing foundational knowledge and technical methodologies that enhanced the project's capabilities.
 
 ### Contact
 
