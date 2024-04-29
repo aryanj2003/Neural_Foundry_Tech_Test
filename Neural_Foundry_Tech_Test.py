@@ -113,4 +113,53 @@ def recognize_and_process_command():
 
     Note:
         This function depends on a microphone for input and requires the Whisper model to be correctly
-        initialized and available. It handles exceptions by printing error messages to the con
+        initialized and available. It handles exceptions by printing error messages to the console.
+    '''
+    # Load Whisper model
+    model = whisper.load_model("base")    
+    # Initialize the recognizer
+    r = sr.Recognizer()    
+     
+    # Exception handling to handle
+    # exceptions at the runtime
+    try:
+
+      # Capture speech input
+      with sr.Microphone() as source:
+          # wait for a second to let the recognizer
+          # adjust the energy threshold based on
+          # the surrounding noise level 
+          r.adjust_for_ambient_noise(source, duration=0.2)
+
+          SpeakText("Please say a command")
+          audio = r.listen(source)  # Listen for the first phrase and extract it into audio data
+          print("Speech captured, processing...")
+
+
+      # Save the captured audio to an MP3 file
+      mp3_path = save_speech_to_mp3(audio)
+      print("Audio saved to MP3, transcribing...")
+
+      # Transcribe the speech using the Whisper model from the MP3 file
+      result = model.transcribe(mp3_path)
+      print("Transcription result:", result['text'])
+      command_text = result['text']
+      
+      # Map the recognized text to an action and print the result
+      action = map_text_to_action(command_text)
+      print(action)
+
+    except sr.RequestError as e:
+      print("An error occurred:")
+      print(str(e))
+      traceback.print_exc()  # This will print the traceback of the exception
+        
+    except sr.UnknownValueError:
+      print("An error occurred:")
+      print(str(e))
+      traceback.print_exc()  # This will print the traceback of the exception
+
+if __name__ == '__main__':
+  recognize_and_process_command()
+
+
