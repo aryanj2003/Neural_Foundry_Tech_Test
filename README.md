@@ -57,9 +57,9 @@ This project incorporates methodologies and code snippets adapted from the follo
 
 - Speech to Text Conversion:
   - The speech recognition functionality in this project was informed by tutorials and examples from GeeksforGeeks. For more detailed       
-guidance on implementing speech recognition features in Python, please visit their article: Python: Convert Speech to Text and Text to Speech.
+guidance on implementing speech recognition features in Python, please visit their article: [Python: Convert Speech to Text and Text to Speech](https://www.geeksforgeeks.org/python-convert-speech-to-text-and-text-to-speech/).
 - Whisper Model for Speech Recognition:
-  - The Whisper model developed by OpenAI was utilized for advanced speech-to-text capabilities. The implementation was guided by the official GitHub repository for Whisper. Detailed documentation and source code can be found here: OpenAI Whisper GitHub Repository.
+  - The Whisper model developed by OpenAI was utilized for advanced speech-to-text capabilities. The implementation was guided by the official GitHub repository for Whisper. Detailed documentation and source code can be found here: [OpenAI Whisper GitHub Repository](https://github.com/openai/whisper).
     
 These resources were instrumental in the development of this application, providing foundational knowledge and technical methodologies that enhanced the project's capabilities.
 
