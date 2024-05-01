@@ -5,8 +5,12 @@ import warnings
 
 import speech_recognition as sr
 import whisper
+from gradientai import Gradient
 from pydub import AudioSegment
 from urllib3.exceptions import InsecureRequestWarning, SecurityWarning
+
+os.environ['GRADIENT_ACCESS_TOKEN'] = "6FKwYaCTlDfTAARlSJTDjrLjs22AiaJN"
+os.environ['GRADIENT_WORKSPACE_ID'] = "ad27a654-5afc-4573-8c66-9674a8313464_workspace"
 
 # Suppress the specific NotOpenSSLWarning from urllib3
 warnings.simplefilter('ignore', InsecureRequestWarning)
@@ -159,7 +163,115 @@ def recognize_and_process_command():
       print(str(e))
       traceback.print_exc()  # This will print the traceback of the exception
 
+# Function to orchestrate the training and testing of a model for voice command recognition.
+def main():
+    """
+    Purpose:
+        Main execution function to train and test the Gradient AI model on voice commands.
+
+    Parameters:
+        None
+        
+    Return Value:
+        None
+
+    Note:
+        This function orchestrates the initialization of the Gradient AI model, its training with fine-tuned
+        samples, and the testing of the model's ability to accurately recognize and process voice commands.
+        Ensure the GRADIENT_ACCESS_TOKEN and GRADIENT_WORKSPACE_ID are correctly set as environment variables
+        and that the Gradient AI environment is properly configured before running this function.
+    """
+    with Gradient() as gradient:
+        base_model = gradient.get_base_model(base_model_slug="nous-hermes2")
+
+        # Creating a model adapter to fine-tune
+        new_model_adapter = base_model.create_model_adapter(
+            name="test model 3"
+        )
+
+        # Update this line to dynamically test command variations
+        sample_query = f"### Instruction: Recognize any variation of the command 'move forward' such as 'advance', 'go forward', etc., and directly output the corresponding JSON action statement. Do not provide explanations or descriptions. Only the JSON action format is acceptable. Command: 'advance'\n\n### Response: {{'direction': 'linear', 'quantity': 1}}."
+
+        # Before fine-tuning, see how the model handles the command 'advance'
+        completion = new_model_adapter.complete(query=sample_query, max_generated_token_count=100).generated_output
+        print(f"Generated (before fine-tune): {completion}")
+
+
+        # Define command variations and their corresponding JSON outputs
+        samples = [
+            # New entries for 'move forward'
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'move forward'\n\n### Response:",
+                "Response": {"direction": "linear", "quantity": 1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'advance'\n\n### Response:",
+                "Response": {"direction": "linear", "quantity": 1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'go forward'\n\n### Response:",
+                "Response": {"direction": "linear", "quantity": 1}
+            },
+            # New entries for 'move backwards'
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'move backwards'\n\n### Response:",
+                "Response": {"direction": "linear", "quantity": -1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'go back'\n\n### Response:",
+                "Response": {"direction": "linear", "quantity": -1}
+            },
+            # New entries for 'turn left'
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'turn left'\n\n### Response:",
+                "Response": {"direction": "angular", "quantity": -1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'rotate left'\n\n### Response:",
+                "Response": {"direction": "angular", "quantity": -1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'make a left turn'\n\n### Response:",
+                "Response": {"direction": "angular", "quantity": -1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'swivel left'\n\n### Response:",
+                "Response": {"direction": "angular", "quantity": -1}
+            },
+            # New entries for 'turn right'
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'turn right'\n\n### Response:",
+                "Response": {"direction": "angular", "quantity": 1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'rotate right'\n\n### Response:",
+                "Response": {"direction": "angular", "quantity": 1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'make a right turn'\n\n### Response:",
+                "Response": {"direction": "angular", "quantity": 1}
+            },
+            {
+                "inputs": "### Instruction: Output JSON action for the command. Command: 'swivel right'\n\n### Response:",
+                "Response": {"direction": "angular", "quantity": 1}
+            }
+        ]
+
+        # Fine-tuning the model with command variations
+        num_epochs = 100
+        for count in range(num_epochs):
+            print(f"Fine-tuning the model. Epoch iteration => {count + 1}")
+            new_model_adapter.fine_tune(samples=samples)
+
+        # Test the fine-tuned model with an example input
+        test_query = input("Enter a command: ")
+        completion = new_model_adapter.complete(query=test_query, max_generated_token_count=100).generated_output
+        print(f"Test input: '{test_query}' => Output: {completion}")
+
+        # Optionally, clean up by deleting the model adapter after use
+        new_model_adapter.delete()
+
 if __name__ == '__main__':
-  recognize_and_process_command()
+    main()
 
 
