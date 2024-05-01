@@ -8,9 +8,12 @@ This project is a technical assessment for the Neural Foundry Software Engineeri
 
 ### System Requirements
 
-- Programming Language: Python 3.9 or newer
-- Libraries:
+- **Programming Language**: Python 3.8 or newer
+- **Libraries**:
   - `speech_recognition` for converting speech to text.
+  - `whisper` for utilizing OpenAI's advanced speech-to-text model.
+  - `pydub` for handling audio data.
+  - `gradientai` for training and utilizing custom models.
   - `json` for formatting output into JSON.
 
 ### Installation
@@ -22,6 +25,15 @@ To install the necessary Python libraries, run the following command in your ter
 ```bash
 pip install SpeechRecognition
 ```
+
+### Environment Configuration
+
+The application requires setting environment variables for accessing the Gradient AI services:
+
+- `GRADIENT_ACCESS_TOKEN`: The access token for authentication with the Gradient platform.
+- `GRADIENT_WORKSPACE_ID`: The workspace ID where your models are hosted.
+
+Set these variables in your system or directly in the script before running.
 
 ### Running the Application
 
@@ -39,8 +51,10 @@ python Neural_Foundry_Tech_Test.py
 
 The application operates in the following manner:
 
-1. Speech to Text: Utilizes the `speech_recognition` library to convert spoken language into text. The application listens for a single phrase or command and processes it into text.
-2. Generate Action Statements: Converts the recognized text into a JSON formatted action statement. For example, the command "move forward" is converted to `{"direction": "linear", "quantity": 1}`.
+1. **Speech to Text**: Utilizes the `speech_recognition` library to convert spoken language into text. The application listens for a single phrase or command and processes it into text.
+2. **Audio Processing**: Converts raw audio data to MP3 using pydub, preparing it for transcription.
+3. **Generate Action Statements**: Converts the recognized text into a JSON formatted action statement. For example, the command "move forward" is converted to `{"direction": "linear", "quantity": 1}`.
+4. **Custom Model Training**: Uses the `gradientai library` to fine-tune models based on specific command variations.
 
 ### Code Structure
 
@@ -60,8 +74,10 @@ This project incorporates methodologies and code snippets adapted from the follo
 guidance on implementing speech recognition features in Python, please visit their article: [Python: Convert Speech to Text and Text to Speech](https://www.geeksforgeeks.org/python-convert-speech-to-text-and-text-to-speech/).
 - Whisper Model for Speech Recognition:
   - The Whisper model developed by OpenAI was utilized for advanced speech-to-text capabilities. The implementation was guided by the official GitHub repository for Whisper. Detailed documentation and source code can be found here: [OpenAI Whisper GitHub Repository](https://github.com/openai/whisper).
-    
-These resources were instrumental in the development of this application, providing foundational knowledge and technical methodologies that enhanced the project's capabilities.
+- Gradient AI Model Training:
+  - Custom model training using the Gradient platform, following documentation available on their [official site](https://www.youtube.com/watch?v=q-5p_yOCvZ0).
+
+
 
 ### Contact
 
